@@ -23,6 +23,12 @@ struct SettingsStoreTests {
             defer { self.lock.unlock() }
             return self.value
         }
+
+        func reset() {
+            self.lock.lock()
+            self.value = false
+            self.lock.unlock()
+        }
     }
 
     @Test
@@ -84,6 +90,33 @@ struct SettingsStoreTests {
 
         #expect(storeB.refreshFrequency == .fifteenMinutes)
         #expect(storeB.refreshFrequency.seconds == 900)
+    }
+
+    @Test
+    func `usage cache duration defaults to five minutes and persists`() throws {
+        let suite = "SettingsStoreTests-usage-cache-duration"
+        let defaultsA = try #require(UserDefaults(suiteName: suite))
+        defaultsA.removePersistentDomain(forName: suite)
+        let configStore = testConfigStore(suiteName: suite)
+        let storeA = SettingsStore(
+            userDefaults: defaultsA,
+            configStore: configStore,
+            zaiTokenStore: NoopZaiTokenStore(),
+            syntheticTokenStore: NoopSyntheticTokenStore())
+
+        #expect(storeA.usageCacheDuration == .fiveMinutes)
+        #expect(storeA.usageCacheDuration.seconds == 300)
+        storeA.usageCacheDuration = .fifteenMinutes
+
+        let defaultsB = try #require(UserDefaults(suiteName: suite))
+        let storeB = SettingsStore(
+            userDefaults: defaultsB,
+            configStore: configStore,
+            zaiTokenStore: NoopZaiTokenStore(),
+            syntheticTokenStore: NoopSyntheticTokenStore())
+
+        #expect(storeB.usageCacheDuration == .fifteenMinutes)
+        #expect(storeB.usageCacheDuration.seconds == 900)
     }
 
     @Test
@@ -1129,6 +1162,8 @@ struct SettingsStoreTests {
         } onChange: {
             didChange.set()
         }
+        try? await Task.sleep(nanoseconds: 50_000_000)
+        didChange.reset()
 
         store.selectedMenuProvider = .claude
         store.mergedMenuLastSelectedWasOverview.toggle()

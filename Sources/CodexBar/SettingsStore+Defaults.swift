@@ -1,5 +1,6 @@
 import CodexBarCore
 import Foundation
+import Observation
 import ServiceManagement
 
 extension SettingsStore {
@@ -10,6 +11,14 @@ extension SettingsStore {
         set {
             self.defaultsState.refreshFrequency = newValue
             self.userDefaults.set(newValue.rawValue, forKey: "refreshFrequency")
+        }
+    }
+
+    var usageCacheDuration: UsageCacheDuration {
+        get { self.defaultsState.usageCacheDuration }
+        set {
+            self.defaultsState.usageCacheDuration = newValue
+            self.userDefaults.set(newValue.rawValue, forKey: "usageCacheDuration")
         }
     }
 
@@ -478,27 +487,24 @@ extension SettingsStore {
         }
     }
 
+    @ObservationIgnored
     var mergedMenuLastSelectedWasOverview: Bool {
-        get { self.mergedMenuLastSelectedWasOverviewStorage }
+        get { self.menuSelectionState.mergedMenuLastSelectedWasOverview }
         set {
-            self.mergedMenuLastSelectedWasOverviewStorage = newValue
+            guard self.menuSelectionState.mergedMenuLastSelectedWasOverview != newValue else { return }
+            self.menuSelectionState.mergedMenuLastSelectedWasOverview = newValue
             self.userDefaults.set(newValue, forKey: "mergedMenuLastSelectedWasOverview")
         }
     }
 
-    private var mergedOverviewSelectedProvidersRaw: [String] {
-        get { self.defaultsState.mergedOverviewSelectedProvidersRaw }
-        set {
-            self.defaultsState.mergedOverviewSelectedProvidersRaw = newValue
-            self.userDefaults.set(newValue, forKey: "mergedOverviewSelectedProviders")
-        }
-    }
-
+    @ObservationIgnored
     private var selectedMenuProviderRaw: String? {
-        get { self.selectedMenuProviderRawStorage }
+        get { self.menuSelectionState.selectedMenuProvider?.rawValue }
         set {
-            self.selectedMenuProviderRawStorage = newValue
-            if let raw = newValue {
+            let provider = newValue.flatMap(UsageProvider.init(rawValue:))
+            guard self.menuSelectionState.selectedMenuProvider != provider else { return }
+            self.menuSelectionState.selectedMenuProvider = provider
+            if let raw = provider?.rawValue {
                 self.userDefaults.set(raw, forKey: "selectedMenuProvider")
             } else {
                 self.userDefaults.removeObject(forKey: "selectedMenuProvider")
@@ -506,10 +512,17 @@ extension SettingsStore {
         }
     }
 
+    @ObservationIgnored
     var selectedMenuProvider: UsageProvider? {
-        get { self.selectedMenuProviderRaw.flatMap(UsageProvider.init(rawValue:)) }
+        get { self.menuSelectionState.selectedMenuProvider }
+        set { self.selectedMenuProviderRaw = newValue?.rawValue }
+    }
+
+    private var mergedOverviewSelectedProvidersRaw: [String] {
+        get { self.defaultsState.mergedOverviewSelectedProvidersRaw }
         set {
-            self.selectedMenuProviderRaw = newValue?.rawValue
+            self.defaultsState.mergedOverviewSelectedProvidersRaw = newValue
+            self.userDefaults.set(newValue, forKey: "mergedOverviewSelectedProviders")
         }
     }
 

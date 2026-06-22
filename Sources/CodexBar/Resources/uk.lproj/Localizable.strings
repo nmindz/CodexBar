@@ -1103,3 +1103,11 @@
 "byte_unit_megabytes" = "мегабайти";
 "byte_unit_gigabyte" = "гігабайт";
 "byte_unit_gigabytes" = "гігабайти";
+
+/* Usage Cache */
+"usage_cache_title" = "Usage cache";
+"usage_cache_subtitle" = "Skip automatic provider refreshes while recent data is still valid. Manual refresh bypasses this cache.";
+"usage_cache_disabled" = "Disabled";
+"reset_usage_cache" = "Reset usage cache";
+"usage_cache_reset_done" = "Usage cache reset and refreshed.";
+"usage_cache_reset_failed" = "Cache reset failed: %@";

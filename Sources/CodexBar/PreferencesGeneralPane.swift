@@ -62,6 +62,8 @@ enum AppLanguage: String, CaseIterable, Identifiable {
 struct GeneralPane: View {
     @Bindable var settings: SettingsStore
     @Bindable var store: UsageStore
+    @State private var isResettingUsageCache = false
+    @State private var usageCacheResetStatus: String?
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
@@ -187,6 +189,44 @@ struct GeneralPane: View {
                                 .foregroundStyle(.secondary)
                         }
                     }
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack(alignment: .top, spacing: 12) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(L("usage_cache_title"))
+                                    .font(.body)
+                                Text(L("usage_cache_subtitle"))
+                                    .font(.footnote)
+                                    .foregroundStyle(.tertiary)
+                            }
+                            Spacer()
+                            Picker(L("usage_cache_title"), selection: self.$settings.usageCacheDuration) {
+                                ForEach(UsageCacheDuration.allCases) { option in
+                                    Text(option.label).tag(option)
+                                }
+                            }
+                            .labelsHidden()
+                            .pickerStyle(.menu)
+                            .frame(maxWidth: 200)
+                        }
+                        HStack(spacing: 10) {
+                            Button {
+                                Task { await self.resetUsageCache() }
+                            } label: {
+                                if self.isResettingUsageCache {
+                                    ProgressView().controlSize(.small)
+                                } else {
+                                    Text(L("reset_usage_cache"))
+                                }
+                            }
+                            .disabled(self.isResettingUsageCache)
+                            if let usageCacheResetStatus {
+                                Text(usageCacheResetStatus)
+                                    .font(.footnote)
+                                    .foregroundStyle(.tertiary)
+                                    .lineLimit(2)
+                            }
+                        }
+                    }
                     PreferenceToggleRow(
                         title: L("check_provider_status_title"),
                         subtitle: L("check_provider_status_subtitle"),
@@ -219,6 +259,22 @@ struct GeneralPane: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 12)
         }
+    }
+
+    private func resetUsageCache() async {
+        if self.isResettingUsageCache { return }
+        self.isResettingUsageCache = true
+        self.usageCacheResetStatus = nil
+        defer { self.isResettingUsageCache = false }
+
+        if let error = await self.store.clearUsageCaches() {
+            self.usageCacheResetStatus = String(format: L("usage_cache_reset_failed"), error)
+            return
+        }
+        await ProviderInteractionContext.$current.withValue(.userInitiated) {
+            await self.store.refresh(forceTokenUsage: true)
+        }
+        self.usageCacheResetStatus = L("usage_cache_reset_done")
     }
 
     private func costStatusLine(provider: UsageProvider) -> some View {

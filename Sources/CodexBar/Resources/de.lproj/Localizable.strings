@@ -1105,3 +1105,11 @@
 "byte_unit_megabytes" = "Megabyte";
 "byte_unit_gigabyte" = "Gigabyte";
 "byte_unit_gigabytes" = "Gigabyte";
+
+/* Usage Cache */
+"usage_cache_title" = "Usage cache";
+"usage_cache_subtitle" = "Skip automatic provider refreshes while recent data is still valid. Manual refresh bypasses this cache.";
+"usage_cache_disabled" = "Disabled";
+"reset_usage_cache" = "Reset usage cache";
+"usage_cache_reset_done" = "Usage cache reset and refreshed.";
+"usage_cache_reset_failed" = "Cache reset failed: %@";

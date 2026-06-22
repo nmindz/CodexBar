@@ -421,6 +421,12 @@
 "cost_auto_refresh_info" = "Auto-refresh: hourly · Timeout: 10m";
 "refresh_cadence_title" = "Refresh cadence";
 "refresh_cadence_subtitle" = "How often CodexBar polls providers in the background.";
+"usage_cache_title" = "Usage cache";
+"usage_cache_subtitle" = "Skip automatic provider refreshes while recent data is still valid. Manual refresh bypasses this cache.";
+"usage_cache_disabled" = "Disabled";
+"reset_usage_cache" = "Reset usage cache";
+"usage_cache_reset_done" = "Usage cache reset and refreshed.";
+"usage_cache_reset_failed" = "Cache reset failed: %@";
 "manual_refresh_hint" = "Auto-refresh is off; use the menu's Refresh command.";
 "check_provider_status_title" = "Check provider status";
 "check_provider_status_subtitle" = "Polls OpenAI/Claude status pages and Google Workspace for Gemini/Antigravity, surfacing incidents in the icon and menu.";

@@ -38,6 +38,45 @@ enum RefreshFrequency: String, CaseIterable, Identifiable {
     }
 }
 
+enum UsageCacheDuration: String, CaseIterable, Identifiable {
+    case disabled
+    case oneMinute
+    case twoMinutes
+    case fiveMinutes
+    case fifteenMinutes
+    case thirtyMinutes
+
+    var id: String {
+        self.rawValue
+    }
+
+    var seconds: TimeInterval {
+        switch self {
+        case .disabled: 0
+        case .oneMinute: 60
+        case .twoMinutes: 120
+        case .fiveMinutes: 300
+        case .fifteenMinutes: 900
+        case .thirtyMinutes: 1800
+        }
+    }
+
+    var isEnabled: Bool {
+        self.seconds > 0
+    }
+
+    var label: String {
+        switch self {
+        case .disabled: L("usage_cache_disabled")
+        case .oneMinute: L("refresh_1min")
+        case .twoMinutes: L("refresh_2min")
+        case .fiveMinutes: L("refresh_5min")
+        case .fifteenMinutes: L("refresh_15min")
+        case .thirtyMinutes: L("refresh_30min")
+        }
+    }
+}
+
 enum MenuBarMetricPreference: String, CaseIterable, Identifiable {
     case automatic
     case primary
@@ -124,6 +163,11 @@ struct CachedCodexAccountMenuProjection: Equatable {
     let projection: CodexVisibleAccountProjection
 }
 
+final class MenuSelectionState {
+    var mergedMenuLastSelectedWasOverview = false
+    var selectedMenuProvider: UsageProvider?
+}
+
 enum CodexAccountMenuProjectionRevalidationResult: Equatable {
     case skipped
     case discarded
@@ -164,8 +208,7 @@ final class SettingsStore {
     @ObservationIgnored var _test_codexAccountSnapshotLoader:
         (@Sendable (CodexActiveSource) -> CodexAccountReconciliationSnapshot)?
     #endif
-    @ObservationIgnored var mergedMenuLastSelectedWasOverviewStorage = false
-    @ObservationIgnored var selectedMenuProviderRawStorage: String?
+    @ObservationIgnored var menuSelectionState = MenuSelectionState()
     var defaultsState: SettingsDefaultsState
     var configRevision: Int = 0
     var providerOrder: [UsageProvider] = []
@@ -268,8 +311,8 @@ final class SettingsStore {
         self.configLoading = true
         let defaultsState = Self.loadDefaultsState(userDefaults: userDefaults)
         self.defaultsState = defaultsState
-        self.mergedMenuLastSelectedWasOverviewStorage = defaultsState.mergedMenuLastSelectedWasOverview
-        self.selectedMenuProviderRawStorage = defaultsState.selectedMenuProviderRaw
+        self.menuSelectionState.mergedMenuLastSelectedWasOverview = defaultsState.mergedMenuLastSelectedWasOverview
+        self.menuSelectionState.selectedMenuProvider = defaultsState.selectedMenuProviderRaw.flatMap(UsageProvider.init(rawValue:))
         self.updateProviderState(config: config)
         self.configLoading = false
         CodexBarLog.setFileLoggingEnabled(self.debugFileLoggingEnabled)
@@ -334,6 +377,12 @@ extension SettingsStore {
         let refreshFrequency = refreshDefault ?? .fiveMinutes
         if Self.isRunningTests, refreshDefault == nil {
             userDefaults.set(refreshFrequency.rawValue, forKey: "refreshFrequency")
+        }
+        let usageCacheDefault = userDefaults.string(forKey: "usageCacheDuration")
+            .flatMap(UsageCacheDuration.init(rawValue:))
+        let usageCacheDuration = usageCacheDefault ?? .fiveMinutes
+        if Self.isRunningTests, usageCacheDefault == nil {
+            userDefaults.set(usageCacheDuration.rawValue, forKey: "usageCacheDuration")
         }
         let launchAtLogin = userDefaults.object(forKey: "launchAtLogin") as? Bool ?? false
         let debugMenuEnabled = userDefaults.object(forKey: "debugMenuEnabled") as? Bool ?? false
@@ -419,6 +468,7 @@ extension SettingsStore {
         let appLanguageRaw = userDefaults.string(forKey: "appLanguage")
         return SettingsDefaultsState(
             refreshFrequency: refreshFrequency,
+            usageCacheDuration: usageCacheDuration,
             launchAtLogin: launchAtLogin,
             debugMenuEnabled: debugMenuEnabled,
             debugDisableKeychainAccess: debugDisableKeychainAccess,

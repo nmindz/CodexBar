@@ -71,6 +71,7 @@ extension UsageStore {
 
     var backgroundWorkSettingsObservationToken: Int {
         _ = self.settings.refreshFrequency
+        _ = self.settings.usageCacheDuration
         _ = self.settings.statusChecksEnabled
         _ = self.settings.sessionQuotaNotificationsEnabled
         _ = self.settings.quotaWarningNotificationsEnabled
@@ -480,6 +481,71 @@ final class UsageStore {
         self.errors[provider] != nil
     }
 
+    func providerSnapshotCacheIsValid(
+        provider: UsageProvider,
+        now: Date = Date(),
+        duration: UsageCacheDuration? = nil) -> Bool
+    {
+        let duration = duration ?? self.settings.usageCacheDuration
+        guard duration.isEnabled else { return false }
+        guard !self.refreshingProviders.contains(provider) else { return false }
+        guard self.errors[provider] == nil else { return false }
+        guard let snapshot = self.snapshots[provider] else { return false }
+        return now.timeIntervalSince(snapshot.updatedAt) < duration.seconds
+    }
+
+    func clearUsageCaches() async -> String? {
+        self.snapshots.removeAll()
+        self.errors.removeAll()
+        self.lastSourceLabels.removeAll()
+        self.lastFetchAttempts.removeAll()
+        self.accountSnapshots.removeAll()
+        self.codexAccountSnapshots = []
+        self.kiloScopeSnapshots = []
+        self.tokenSnapshots.removeAll()
+        self.tokenErrors.removeAll()
+        self.tokenRefreshInFlight.removeAll()
+        self.credits = nil
+        self.lastCreditsSnapshot = nil
+        self.lastCreditsSnapshotAccountKey = nil
+        self.lastCreditsError = nil
+        self.lastCreditsSource = .none
+        self.creditsFailureStreak = 0
+        self.openAIDashboard = nil
+        self.lastOpenAIDashboardSnapshot = nil
+        self.lastOpenAIDashboardError = nil
+        self.openAIDashboardRequiresLogin = false
+        self.openAIDashboardAttachmentAuthorized = false
+        self.openAIDashboardCookieImportStatus = nil
+        self.openAIDashboardCookieImportDebugLog = nil
+        self.versions.removeAll()
+        self.pathDebugInfo = .empty
+        self.statuses.removeAll()
+        self.probeLogs.removeAll()
+        self.providerStorageFootprints.removeAll()
+        self.lastKnownResetSnapshots.removeAll()
+        self.lastKnownSessionRemaining.removeAll()
+        self.lastKnownSessionWindowSource.removeAll()
+        self.lastPermissionPromptNotificationAt.removeAll()
+        self.lastTokenFetchAt.removeAll()
+        self.lastTokenFetchScope.removeAll()
+        self.providerAvailabilityCache.removeAll()
+        self.accountInfoCache.removeAll()
+        for provider in UsageProvider.allCases {
+            self.failureGates[provider]?.reset()
+            self.tokenFailureGates[provider]?.reset()
+        }
+        self.openAIDashboardBackgroundRefreshTask?.cancel()
+        self.openAIDashboardBackgroundRefreshTask = nil
+        self.openAIDashboardRefreshTask?.cancel()
+        self.openAIDashboardRefreshTask = nil
+        self.creditsRefreshTask?.cancel()
+        self.creditsRefreshTask = nil
+        self.tokenRefreshSequenceTask?.cancel()
+        self.tokenRefreshSequenceTask = nil
+        return await self.clearCostUsageCache()
+    }
+
     func isEnabled(_ provider: UsageProvider) -> Bool {
         let enabled = self.settings.isProviderEnabledCached(
             provider: provider,
@@ -566,8 +632,20 @@ final class UsageStore {
         self.startupConnectivityRetryNeeded = false
         let displayEnabledProviders = self.enabledProvidersForDisplay()
         let enabledProviderSet = Set(displayEnabledProviders)
+        let automaticRefreshMayUseCache = !forceTokenUsage &&
+            refreshPhase == .regular &&
+            ProviderInteractionContext.current == .background
+        let refreshCacheDuration = self.settings.usageCacheDuration
         let refreshProviders = self.enabledProvidersForBackgroundWork()
-        let availableRefreshProviders = Set(self.enabledProviders())
+        let cachedRefreshProviders = automaticRefreshMayUseCache
+            ? Set(refreshProviders.filter {
+                self.providerSnapshotCacheIsValid(
+                    provider: $0,
+                    now: Date(),
+                    duration: refreshCacheDuration)
+            })
+            : []
+        let availableRefreshProviders = Set(self.enabledProviders()).subtracting(cachedRefreshProviders)
         let refreshStartedAt = Date()
 
         await ProviderRefreshContext.$current.withValue(refreshPhase) {
@@ -585,7 +663,7 @@ final class UsageStore {
             self.scheduleStorageFootprintRefresh(for: displayEnabledProviders)
 
             await withTaskGroup(of: Void.self) { group in
-                for provider in refreshProviders {
+                for provider in refreshProviders where !cachedRefreshProviders.contains(provider) {
                     group.addTask {
                         await self.refreshProvider(
                             provider,

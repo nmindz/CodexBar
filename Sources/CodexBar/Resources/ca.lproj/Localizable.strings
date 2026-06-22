@@ -1107,3 +1107,11 @@
 "Weekly" = "Setmanal";
 "z.ai API token not found. Set apiKey in ~/.codexbar/config.json or Z_AI_API_KEY." = "No s'ha trobat el token d'API de z.ai. Definiu apiKey a ~/.codexbar/config.json o Z_AI_API_KEY.";
 "≈ %d%% run-out risk" = "≈ %d%% risc d'esgotament";
+
+/* Usage Cache */
+"usage_cache_title" = "Usage cache";
+"usage_cache_subtitle" = "Skip automatic provider refreshes while recent data is still valid. Manual refresh bypasses this cache.";
+"usage_cache_disabled" = "Disabled";
+"reset_usage_cache" = "Reset usage cache";
+"usage_cache_reset_done" = "Usage cache reset and refreshed.";
+"usage_cache_reset_failed" = "Cache reset failed: %@";

@@ -3,7 +3,7 @@ import CodexBarCore
 import QuartzCore
 
 extension StatusItemController {
-    private static let providerSwitcherMenuRebuildDebounceNanoseconds: UInt64 = 0
+    private static let providerSwitcherMenuRebuildDebounceNanoseconds: UInt64 = 30_000_000
 
     private struct ScheduledOpenMenuRebuild {
         let provider: UsageProvider?
