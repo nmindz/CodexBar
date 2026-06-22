@@ -555,7 +555,7 @@
 "update_channel" = "更新頻道";
 "check_for_updates" = "檢查更新…";
 "updates_unavailable" = "此建置無法使用更新功能。";
-"copyright" = "© 2026 Peter Steinberger。MIT 許可證。";
+"copyright" = "© 2026 Evandro Camargo. MIT License.";
 "section_logging" = "記錄";
 "enable_file_logging" = "啟用檔案記錄";
 "enable_file_logging_subtitle" = "將記錄寫入 %@ 以進行除錯。";

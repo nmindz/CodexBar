@@ -561,7 +561,7 @@
 "update_channel" = "Kanaal bijwerken";
 "check_for_updates" = "Controleer op updates…";
 "updates_unavailable" = "Updates zijn niet beschikbaar in deze build.";
-"copyright" = "© 2026 Peter Steinberger. MIT-licentie.";
+"copyright" = "© 2026 Evandro Camargo. MIT License.";
 
 /* Debug Pane */
 "section_logging" = "Loggen";

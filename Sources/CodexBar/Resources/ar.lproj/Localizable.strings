@@ -561,7 +561,7 @@
 "update_channel" = "قناة التحديث";
 "check_for_updates" = "تحقق من التحديثات...";
 "updates_unavailable" = "التحديثات غير متوفرة في هذا الإصدار.";
-"copyright" = "© 2026 بيتر ستاينبرجر. MIT الرخصة.";
+"copyright" = "© 2026 Evandro Camargo. MIT License.";
 
 /* Debug Pane */
 "section_logging" = "قطع الأشجار";

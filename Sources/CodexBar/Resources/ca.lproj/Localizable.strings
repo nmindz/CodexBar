@@ -550,7 +550,7 @@
 "update_channel" = "Canal d'actualitzacions";
 "check_for_updates" = "Cerca actualitzacions…";
 "updates_unavailable" = "Actualitzacions no disponibles en aquesta compilació.";
-"copyright" = "© 2026 Peter Steinberger. Llicència MIT.";
+"copyright" = "© 2026 Evandro Camargo. MIT License.";
 
 /* Debug Pane */
 "section_logging" = "Registre";

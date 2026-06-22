@@ -557,7 +557,7 @@
 "update_channel" = "Kênh cập nhật";
 "check_for_updates" = "Kiểm tra các bản cập nhật…";
 "updates_unavailable" = "Các bản cập nhật không có sẵn trong bản dựng này.";
-"copyright" = "© 2026 Peter Steinberger. Giấy phép MIT.";
+"copyright" = "© 2026 Evandro Camargo. MIT License.";
 
 /* Debug Pane */
 "section_logging" = "Ghi nhật ký";

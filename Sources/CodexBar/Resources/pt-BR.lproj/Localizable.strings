@@ -558,7 +558,7 @@
 "update_channel" = "Canal de atualização";
 "check_for_updates" = "Buscar atualizações…";
 "updates_unavailable" = "Atualizações indisponíveis nesta build.";
-"copyright" = "© 2026 Peter Steinberger. Licença MIT.";
+"copyright" = "© 2026 Evandro Camargo. MIT License.";
 
 /* Debug Pane */
 "section_logging" = "Logs";

@@ -563,7 +563,7 @@
 "update_channel" = "Saluran Pembaruan";
 "check_for_updates" = "Periksa Pembaruan…";
 "updates_unavailable" = "Pembaruan tidak tersedia di build ini.";
-"copyright" = "© 2026 Peter Steinberger. Lisensi MIT.";
+"copyright" = "© 2026 Evandro Camargo. MIT License.";
 
 /* Debug Pane */
 "section_logging" = "Pencatatan";

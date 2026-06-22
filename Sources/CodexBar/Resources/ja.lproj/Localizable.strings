@@ -386,7 +386,7 @@
 "version_format" = "バージョン %@";
 "vertex_ai_login_instructions" = "Vertex AI の使用状況を追跡するには、Google Cloud で認証してください。\n\n1. ターミナルを開く\n2. 実行: gcloud auth application-default login\n3. ブラウザの指示に従ってサインイン\n4. プロジェクトを設定: gcloud config set project PROJECT_ID\n\n今すぐターミナルを開きますか？";
 "workspaceID is set but only opencode, opencodego, and deepgram support workspaceID." = "workspaceID が設定されていますが、workspaceID に対応しているのは opencode、opencodego、deepgram のみです。";
-"© 2026 Peter Steinberger. MIT License." = "© 2026 Peter Steinberger. MIT License.";
+"© 2026 Peter Steinberger. MIT License." = "© 2026 Evandro Camargo. MIT License.";
 
 /* General Pane */
 "section_system" = "システム";
@@ -558,7 +558,7 @@
 "update_channel" = "アップデートチャンネル";
 "check_for_updates" = "アップデートを確認…";
 "updates_unavailable" = "このビルドではアップデートを利用できません。";
-"copyright" = "© 2026 Peter Steinberger. MIT License.";
+"copyright" = "© 2026 Evandro Camargo. MIT License.";
 
 /* Debug Pane */
 "section_logging" = "ログ";

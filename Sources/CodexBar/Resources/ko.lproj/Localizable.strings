@@ -388,7 +388,7 @@
 "version_format" = "버전 %@";
 "vertex_ai_login_instructions" = "Vertex AI 사용량을 추적하려면 Google Cloud로 인증하세요.\n\n1. 터미널 열기\n2. 실행: gcloud auth application-default login\n3. 브라우저 안내에 따라 로그인\n4. 프로젝트 설정: gcloud config set project PROJECT_ID\n\n지금 터미널을 여시겠습니까?";
 "workspaceID is set but only opencode, opencodego, and deepgram support workspaceID." = "workspaceID가 설정되었지만 opencode, opencodego, deepgram만 workspaceID를 지원합니다.";
-"© 2026 Peter Steinberger. MIT License." = "© 2026 Peter Steinberger. MIT License.";
+"© 2026 Peter Steinberger. MIT License." = "© 2026 Evandro Camargo. MIT License.";
 "section_system" = "시스템";
 "section_usage" = "사용량";
 "section_automation" = "자동화";
@@ -548,7 +548,7 @@
 "update_channel" = "업데이트 채널";
 "check_for_updates" = "업데이트 확인…";
 "updates_unavailable" = "이 빌드에서는 업데이트를 사용할 수 없습니다.";
-"copyright" = "© 2026 Peter Steinberger. MIT License.";
+"copyright" = "© 2026 Evandro Camargo. MIT License.";
 "section_logging" = "로깅";
 "enable_file_logging" = "파일 로깅 사용";
 "enable_file_logging_subtitle" = "디버깅을 위해 %@에 로그를 기록합니다.";

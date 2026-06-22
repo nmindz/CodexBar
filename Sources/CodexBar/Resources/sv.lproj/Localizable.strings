@@ -560,7 +560,7 @@
 "update_channel" = "Uppdateringskanal";
 "check_for_updates" = "Sök efter uppdateringar…";
 "updates_unavailable" = "Uppdateringar är inte tillgängliga i det här bygget.";
-"copyright" = "© 2026 Peter Steinberger. MIT-licens.";
+"copyright" = "© 2026 Evandro Camargo. MIT License.";
 
 /* Debug Pane */
 "section_logging" = "Loggning";

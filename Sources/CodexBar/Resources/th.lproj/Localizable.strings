@@ -561,7 +561,7 @@
 "update_channel" = "อัปเดตช่อง";
 "check_for_updates" = "ตรวจสอบการอัปเดต...";
 "updates_unavailable" = "การอัปเดตไม่พร้อมใช้งานในรุ่นนี้";
-"copyright" = "© 2026 ปีเตอร์ สไตน์เบอร์เกอร์ ใบอนุญาต MIT";
+"copyright" = "© 2026 Evandro Camargo. MIT License.";
 
 /* Debug Pane */
 "section_logging" = "การบันทึก";

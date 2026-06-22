@@ -561,7 +561,7 @@
 "update_channel" = "به روزرسانی کانال";
 "check_for_updates" = "به روزرسانی ها را بررسی کنید...";
 "updates_unavailable" = "به روزرسانی ها در این نسخه در دسترس نیستند.";
-"copyright" = "© ۲۰۲۶ پیتر استاینبرگر. MIT مجوز.";
+"copyright" = "© 2026 Evandro Camargo. MIT License.";
 
 /* Debug Pane */
 "section_logging" = "چوب بری";

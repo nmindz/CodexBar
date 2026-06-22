@@ -561,7 +561,7 @@
 "update_channel" = "Kanal aktualisieren";
 "check_for_updates" = "Nach Updates suchen…";
 "updates_unavailable" = "Updates sind in diesem Build nicht verfügbar.";
-"copyright" = "© 2026 Peter Steinberger. MIT-Lizenz.";
+"copyright" = "© 2026 Evandro Camargo. MIT License.";
 
 /* Debug Pane */
 "section_logging" = "Protokollierung";

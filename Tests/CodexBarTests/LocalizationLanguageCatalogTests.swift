@@ -263,6 +263,7 @@ struct LocalizationLanguageCatalogTests {
             "Chrome",
             "Cookie: ...",
             "Cookie: …",
+            "copyright",
             "Deployment",
             "Email",
             "Endpoint",

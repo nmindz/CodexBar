@@ -561,7 +561,7 @@
 "update_channel" = "Оновити канал";
 "check_for_updates" = "Перевірити наявність оновлень…";
 "updates_unavailable" = "Оновлення недоступні в цій збірці.";
-"copyright" = "© 2026 Пітер Штайнбергер. Ліцензія MIT.";
+"copyright" = "© 2026 Evandro Camargo. MIT License.";
 
 /* Debug Pane */
 "section_logging" = "Лісозаготівля";

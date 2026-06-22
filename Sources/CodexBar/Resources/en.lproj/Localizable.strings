@@ -388,7 +388,7 @@
 "version_format" = "Version %@";
 "vertex_ai_login_instructions" = "To track Vertex AI usage, authenticate with Google Cloud.\n\n1. Open Terminal\n2. Run: gcloud auth application-default login\n3. Follow the browser prompts to sign in\n4. Set your project: gcloud config set project PROJECT_ID\n\nOpen Terminal now?";
 "workspaceID is set but only opencode, opencodego, and deepgram support workspaceID." = "workspaceID is set but only opencode, opencodego, and deepgram support workspaceID.";
-"© 2026 Peter Steinberger. MIT License." = "© 2026 Peter Steinberger. MIT License.";
+"© 2026 Peter Steinberger. MIT License." = "© 2026 Evandro Camargo. MIT License.";
 
 /* General Pane */
 "section_system" = "System";
@@ -567,7 +567,7 @@
 "update_channel" = "Update Channel";
 "check_for_updates" = "Check for Updates…";
 "updates_unavailable" = "Updates unavailable in this build.";
-"copyright" = "© 2026 Peter Steinberger. MIT License.";
+"copyright" = "© 2026 Evandro Camargo. MIT License.";
 
 /* Debug Pane */
 "section_logging" = "Logging";
