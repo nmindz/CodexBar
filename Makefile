@@ -1,6 +1,7 @@
 SHELL := /bin/bash
+APP_IDENTITY ?= Apple Development: nightmaremindz@gmail.com (UF98E359JX)
 
-.PHONY: build check docs-list format lint release restart start start-debug start-release stop test test-live test-tty
+.PHONY: build check docs-list format install lint release restart start start-debug start-release stop test test-live test-tty
 
 start:
 	./Scripts/compile_and_run.sh
@@ -41,3 +42,9 @@ test-live:
 
 release:
 	./Scripts/package_app.sh release
+
+install:
+	APP_IDENTITY="$(APP_IDENTITY)" ./Scripts/package_app.sh release
+	pkill -x CodexBar || pkill -f CodexBar.app || true
+	rm -rf /Applications/CodexBar.app
+	ditto CodexBar.app /Applications/CodexBar.app
